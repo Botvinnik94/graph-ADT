@@ -97,7 +97,7 @@ int graph__newEdgeUndirected(Graph *g, int src, int dest)
 int graph__topologicalSorting(Graph *g, Queue* topologicalQueue){
     int *visited = calloc(g->numVertices, sizeof(int));
     int *entryDegree = calloc(g->numVertices, sizeof(int));
-    int i;
+    int i, returnVal;
     AdjListNode *iterator;
 
     if(visited == NULL || entryDegree == NULL)
@@ -113,10 +113,10 @@ int graph__topologicalSorting(Graph *g, Queue* topologicalQueue){
         }
     }
 
-    if (1 == __topologicalSorting(g, visited, entryDegree, topologicalQueue))
-        return 1;
-    else
-        return 0;
+    returnVal = __topologicalSorting(g, visited, entryDegree, topologicalQueue);
+    free(visited);
+    free(entryDegree);
+    return returnVal;
 }
 
 int __topologicalSorting(Graph *g, int* visited, int* entryDegree, Queue* topologicalQueue){
