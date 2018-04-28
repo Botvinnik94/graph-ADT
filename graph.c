@@ -94,17 +94,16 @@ int graph__newEdgeUndirected(Graph *g, int src, int dest)
     return 0;
 }
 
-Stack graph__topologicalSorting(Graph *g){
+int graph__topologicalSorting(Graph *g, Queue* topologicalQueue){
     int *visited = calloc(g->numVertices, sizeof(int));
     int *entryDegree = calloc(g->numVertices, sizeof(int));
-    Stack topologicalStack;
     int i;
     AdjListNode *iterator;
 
     if(visited == NULL || entryDegree == NULL)
-        return NULL;
+        return 1;
 
-    stack__new(&topologicalStack);
+    queue__new(topologicalQueue);
 
     for(i = 0; i < g->numVertices; i++){
         iterator = g->vertice[i].list;
@@ -114,40 +113,41 @@ Stack graph__topologicalSorting(Graph *g){
         }
     }
 
-    if (-1 == __topologicalSorting(g, visited, entryDegree, &topologicalStack))
-        return NULL;
+    if (1 == __topologicalSorting(g, visited, entryDegree, topologicalQueue))
+        return 1;
     else
-        return topologicalStack;
+        return 0;
 }
 
-int __topologicalSorting(Graph *g, int* visited, int* entryDegree, Stack* s){
+int __topologicalSorting(Graph *g, int* visited, int* entryDegree, Queue* topologicalQueue){
     Queue q;
     AdjListNode* iterator;
     int i, *v;
+    int *index;
 
     queue__new(&q);
 
     for(i = 0; i < g->numVertices; i++){
         if(entryDegree[i] == 0){
-            int *index = malloc(sizeof(int));
-            *index = i;
-            queue__insert(&q, index);
+            SAVE_ON_HEAP(i, index);
+            RETURN_ON_FAILURE(queue__insert(&q, index));
         }
     }
 
     while(!queue__isEmpty(&q)){
         v = (int*)queue__remove(&q);
-        stack__push(s, v);
+        RETURN_ON_FAILURE(queue__insert(topologicalQueue, v));
 
         iterator = g->vertice[*v].list;
         while(iterator != NULL){
             entryDegree[iterator->dest]--;
             if(entryDegree[iterator->dest] == 0){
-                int *index = malloc(sizeof(int));
-                *index = iterator->dest;
-                queue__insert(&q, index);
+                SAVE_ON_HEAP(iterator->dest, index);
+                RETURN_ON_FAILURE(queue__insert(&q, index));
             }
             iterator = iterator->next;
         }
     }
+
+    return 0;
 }

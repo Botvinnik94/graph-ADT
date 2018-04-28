@@ -1,6 +1,6 @@
 #include "queue.h"
 
-int queue__new(Queue *q){
+void queue__new(Queue *q){
     q->top = NULL;
     q->bottom = NULL;
 }

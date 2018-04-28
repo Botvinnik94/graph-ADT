@@ -13,7 +13,7 @@ typedef struct _queue {
     Node *bottom;
 } Queue;
 
-int queue__new(Queue *q);
+void queue__new(Queue *q);
 int queue__isEmpty(Queue *q);
 int queue__insert(Queue *q, void *value);
 void * queue__remove(Queue *q);

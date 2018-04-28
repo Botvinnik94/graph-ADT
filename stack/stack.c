@@ -1,12 +1,12 @@
 #include "stack.h"
 
 void stack__new(Stack *s) {
-    s = NULL;
+    *s = NULL;
 }
 
 int stack__isEmpty(Stack *s) {
-    if(s == NULL)   return 1;
-    else            return 0;
+    if(*s == NULL)   return 1;
+    else             return 0;
 }
 
 int stack__push(Stack *s, void *value) {
