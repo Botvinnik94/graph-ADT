@@ -13,7 +13,7 @@ int queue__isEmpty(Queue *q){
 Node * __new_Node(void *value){
     Node *newNode;
 
-    newNode = malloc(sizeof(newNode));
+    newNode = calloc(1, sizeof(newNode));
     if(newNode == NULL) return NULL;
 
     newNode->value = value;

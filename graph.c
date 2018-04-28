@@ -1,6 +1,6 @@
 #include "graph.h"
 
-AdjListNode * __new_adjListNode(size_t dest){
+AdjListNode * __new_adjListNode(int dest){
     AdjListNode *newNode;
 
     newNode = calloc(1, sizeof(newNode));
@@ -10,14 +10,14 @@ AdjListNode * __new_adjListNode(size_t dest){
     return newNode;
 }
 
-Vertice * __new_vertices_array(size_t numVertices){
+Vertice * __new_vertices_array(int numVertices){
     Vertice *verticesArray;
 
     verticesArray = calloc(numVertices, sizeof(verticesArray));
     return verticesArray;
 }
 
-int graph__newGraph(Graph *g, size_t numVertices){
+int graph__newGraph(Graph *g, int numVertices){
     if(g == NULL) return 1;
 
     if(numVertices == 0)    return 1;
@@ -28,7 +28,7 @@ int graph__newGraph(Graph *g, size_t numVertices){
     else                    return 0;
 }
 
-int graph__newEdgeDirected(Graph *g, size_t src, size_t dest)
+int graph__newEdgeDirected(Graph *g, int src, int dest)
 {
     if(g == NULL) return 1;
 
@@ -53,7 +53,7 @@ int graph__newEdgeDirected(Graph *g, size_t src, size_t dest)
     return 0;
 }
 
-int graph__newEdgeUndirected(Graph *g, size_t src, size_t dest)
+int graph__newEdgeUndirected(Graph *g, int src, int dest)
 {
     if(g == NULL) return 1;
 
@@ -92,4 +92,62 @@ int graph__newEdgeUndirected(Graph *g, size_t src, size_t dest)
         previousDest->next = iteratorDest;
 
     return 0;
+}
+
+Stack graph__topologicalSorting(Graph *g){
+    int *visited = calloc(g->numVertices, sizeof(int));
+    int *entryDegree = calloc(g->numVertices, sizeof(int));
+    Stack topologicalStack;
+    int i;
+    AdjListNode *iterator;
+
+    if(visited == NULL || entryDegree == NULL)
+        return NULL;
+
+    stack__new(&topologicalStack);
+
+    for(i = 0; i < g->numVertices; i++){
+        iterator = g->vertice[i].list;
+        while(iterator != NULL){
+            entryDegree[iterator->dest]++;
+            iterator = iterator->next;
+        }
+    }
+
+    if (-1 == __topologicalSorting(g, visited, entryDegree, &topologicalStack))
+        return NULL;
+    else
+        return topologicalStack;
+}
+
+int __topologicalSorting(Graph *g, int* visited, int* entryDegree, Stack* s){
+    Queue q;
+    AdjListNode* iterator;
+    int i, *v;
+
+    queue__new(&q);
+
+    for(i = 0; i < g->numVertices; i++){
+        if(entryDegree[i] == 0){
+            int *index = malloc(sizeof(int));
+            *index = i;
+            queue__insert(&q, index);
+        }
+    }
+
+    while(!queue__isEmpty(&q)){
+        v = (int*)queue__remove(&q);
+        stack__push(s, v);
+
+        iterator = g->vertice[*v].list;
+        while(iterator != NULL){
+            entryDegree[iterator->dest]--;
+            if(entryDegree[iterator->dest] == 0){
+                int *index = malloc(sizeof(int));
+                *index = iterator->dest;
+                queue__insert(&q, index);
+            }
+            iterator = iterator->next;
+        }
+    }
 }
