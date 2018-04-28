@@ -37,7 +37,7 @@ typedef struct _graph {
 
 AdjListNode * __new_adjListNode(int dest);
 Vertice * __new_vertices_array(int numVertices);
-int __topologicalSorting(Graph *g, int* visited, int* entryDegree, Queue* topologicalQueue);
+int __topologicalSorting(Graph *g, int* entryDegree, Queue* topologicalQueue);
 
 int graph__newGraph(Graph *g, int numVertices);
 int graph__newEdgeUndirected(Graph *g, int src, int dest);

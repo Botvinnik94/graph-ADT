@@ -95,12 +95,11 @@ int graph__newEdgeUndirected(Graph *g, int src, int dest)
 }
 
 int graph__topologicalSorting(Graph *g, Queue* topologicalQueue){
-    int *visited = calloc(g->numVertices, sizeof(int));
     int *entryDegree = calloc(g->numVertices, sizeof(int));
     int i, returnVal;
     AdjListNode *iterator;
 
-    if(visited == NULL || entryDegree == NULL)
+    if(entryDegree == NULL)
         return 1;
 
     queue__new(topologicalQueue);
@@ -113,13 +112,12 @@ int graph__topologicalSorting(Graph *g, Queue* topologicalQueue){
         }
     }
 
-    returnVal = __topologicalSorting(g, visited, entryDegree, topologicalQueue);
-    free(visited);
+    returnVal = __topologicalSorting(g, entryDegree, topologicalQueue);
     free(entryDegree);
     return returnVal;
 }
 
-int __topologicalSorting(Graph *g, int* visited, int* entryDegree, Queue* topologicalQueue){
+int __topologicalSorting(Graph *g, int* entryDegree, Queue* topologicalQueue){
     Queue q;
     AdjListNode* iterator;
     int i, *v;
@@ -147,7 +145,7 @@ int __topologicalSorting(Graph *g, int* visited, int* entryDegree, Queue* topolo
             }
             iterator = iterator->next;
         }
-    }
+    }   
 
     return 0;
 }
