@@ -28,6 +28,24 @@ int graph__newGraph(Graph *g, int numVertices){
     else                    return 0;
 }
 
+void graph__freeGraph(Graph *g){
+    if (g == NULL) return;
+
+    AdjListNode *iterator, *toRemove;
+    int i;
+    for(i = 0; i < g->numVertices; i++){
+        iterator = g->vertice[i].list;
+        while(iterator != NULL){
+            toRemove = iterator;
+            iterator = iterator->next;
+            free(toRemove);
+        }
+    }
+    free(g->vertice);
+    g->vertice = NULL;
+    g->numVertices = 0;
+}
+
 int graph__newEdgeDirected(Graph *g, int src, int dest)
 {
     if(g == NULL) return 1;

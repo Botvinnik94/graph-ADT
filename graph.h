@@ -40,6 +40,7 @@ Vertice * __new_vertices_array(int numVertices);
 int __topologicalSorting(Graph *g, int* entryDegree, Queue* topologicalQueue);
 
 int graph__newGraph(Graph *g, int numVertices);
+void graph__freeGraph(Graph *g);
 int graph__newEdgeUndirected(Graph *g, int src, int dest);
 int graph__newEdgeDirected(Graph *g, int src, int dest);
 
