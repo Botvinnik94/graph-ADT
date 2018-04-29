@@ -26,6 +26,8 @@ typedef struct _adjListNode {
 } AdjListNode, *AdjList;
 
 typedef struct _vertice {
+    int distance;
+    int previous;
     AdjList list;
 } Vertice;
 
@@ -45,5 +47,6 @@ int graph__newEdgeUndirected(Graph *g, int src, int dest);
 int graph__newEdgeDirected(Graph *g, int src, int dest);
 
 int graph__topologicalSorting(Graph *g, Queue* topologicalQueue);
+int graph__calculateMinPaths(Graph *g, int src);
 
 #endif

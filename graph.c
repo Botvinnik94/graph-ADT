@@ -167,3 +167,60 @@ int __topologicalSorting(Graph *g, int* entryDegree, Queue* topologicalQueue){
 
     return 0;
 }
+
+int graph__calculateMinPaths(Graph *g, int src){
+    if(g == NULL || g->numVertices <= src) return 1;
+
+    int i, *v, *nVertexPtr;
+    AdjListNode *iterator;
+    Queue q;
+    queue__new(&q);
+
+    for(i = 0; i < g->numVertices; i++){
+        g->vertice[i].distance = INFINITE;
+        g->vertice[i].previous = -1;
+    }
+
+    SAVE_ON_HEAP(src, nVertexPtr);
+    RETURN_ON_FAILURE(queue__insert(&q, nVertexPtr));
+
+    while(!queue__isEmpty(&q)){
+        v = (int*)queue__remove(&q);
+        iterator = g->vertice[*v].list;
+        while(iterator != NULL){
+            if(g->vertice[iterator->dest].distance == INFINITE){
+                g->vertice[iterator->dest].distance = g->vertice[*v].distance + 1;
+                g->vertice[iterator->dest].previous = *v;
+
+                SAVE_ON_HEAP(iterator->dest, nVertexPtr);
+                RETURN_ON_FAILURE(queue__insert(&q, nVertexPtr));
+            }
+            iterator = iterator->next;
+        }
+        free(v);
+    }
+
+    return 0;
+}
+
+int graph__minPath(Graph *g, Stack *s, int src, int dest){
+    if(g == NULL || src <= g->numVertices || dest <= g->numVertices)
+        return 1;
+
+    stack__new(s);
+
+    int iterator, *iteratorPtr;
+    iterator = dest;
+
+    SAVE_ON_HEAP(iterator, iteratorPtr);
+    RETURN_ON_FAILURE(stack__push(s, iteratorPtr));
+    while(iterator != src){
+        iterator = g->vertice[iterator].previous;
+        if(iterator == -1) return 1;
+
+        SAVE_ON_HEAP(iterator, iteratorPtr);
+        RETURN_ON_FAILURE(stack__push(s, iteratorPtr));
+    }
+
+    return 0;
+}
