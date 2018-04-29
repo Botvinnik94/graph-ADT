@@ -13,7 +13,7 @@ AdjListNode * __new_adjListNode(int dest){
 Vertice * __new_vertices_array(int numVertices){
     Vertice *verticesArray;
 
-    verticesArray = calloc(numVertices, sizeof(verticesArray));
+    verticesArray = calloc(numVertices, sizeof(Vertice));
     return verticesArray;
 }
 
@@ -180,6 +180,7 @@ int graph__calculateMinPaths(Graph *g, int src){
         g->vertice[i].distance = INFINITE;
         g->vertice[i].previous = -1;
     }
+    g->vertice[src].distance = 0;
 
     SAVE_ON_HEAP(src, nVertexPtr);
     RETURN_ON_FAILURE(queue__insert(&q, nVertexPtr));
@@ -204,7 +205,7 @@ int graph__calculateMinPaths(Graph *g, int src){
 }
 
 int graph__minPath(Graph *g, Stack *s, int src, int dest){
-    if(g == NULL || src <= g->numVertices || dest <= g->numVertices)
+    if(g == NULL || src >= g->numVertices || dest >= g->numVertices)
         return 1;
 
     stack__new(s);
