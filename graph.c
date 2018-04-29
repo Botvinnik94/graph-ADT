@@ -211,6 +211,7 @@ int graph__calculateDijkstra(Graph *g, int src){
     int i, cost, *v, *nVertexPtr, *visited;
     AdjListNode *iterator;
     BinaryHeap h;
+    Element e;
 
     visited = calloc(g->numVertices, sizeof(int));
     if(visited == NULL) return 1;
@@ -227,7 +228,8 @@ int graph__calculateDijkstra(Graph *g, int src){
     RETURN_ON_FAILURE(bheap__insert(&h, 0, nVertexPtr));
 
     while(!bheap__isEmpty(&h)){
-        bheap__remove(&h, v, &nVertexPtr);
+        bheap__remove(&h, &e);
+        v = (int*)e.value;
         if(visited[*v] == 0){
             visited[*v] = 1;
             iterator = g->vertice[*v].list;
