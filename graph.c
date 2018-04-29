@@ -250,6 +250,7 @@ int graph__calculateDijkstra(Graph *g, int src){
                 iterator = iterator->next;
             }
         }
+        free(v);
     }
 
     bheap__freeHeap(&h);
