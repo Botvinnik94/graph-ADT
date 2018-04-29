@@ -3,6 +3,7 @@
 
 #include "queue/queue.h"
 #include "stack/stack.h"
+#include "binary-heap/binary-heap.h"
 
 #define INFINITE 2147483647
 
@@ -49,6 +50,7 @@ int graph__newEdgeDirected(Graph *g, int src, int dest, int weight);
 
 int graph__topologicalSorting(Graph *g, Queue* topologicalQueue);
 int graph__calculateMinPaths(Graph *g, int src);
-int graph__minPath(Graph *g, Stack *s, int src, int dest);
+int graph__calculateDijkstra(Graph *g, int src);
+int graph__getPath(Graph *g, Stack *s, int src, int dest);
 
 #endif
