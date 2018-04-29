@@ -39,14 +39,12 @@ int bheap__insert(BinaryHeap *h, int key, void *value) {
     return 0;
 }
 
-int bheap__remove(BinaryHeap *h, int* key, void **value) {
+int bheap__remove(BinaryHeap *h, Element* e) {
 
     if(bheap__isEmpty(h))
         return 1;
     
-    *key = h->elementArray[1].key;
-    *value = h->elementArray[1].value;
-
+    *e = h->elementArray[1];
     h->elementArray[1] = h->elementArray[h->size];
     h->size--;
     __descendingFiltering(h, 1);
