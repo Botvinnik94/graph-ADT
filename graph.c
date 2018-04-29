@@ -1,12 +1,13 @@
 #include "graph.h"
 
-AdjListNode * __new_adjListNode(int dest){
+AdjListNode * __new_adjListNode(int dest, int weight){
     AdjListNode *newNode;
 
     newNode = calloc(1, sizeof(newNode));
     if (newNode == NULL) return NULL;
 
     newNode->dest = dest;
+    newNode->weight = weight;
     return newNode;
 }
 
@@ -46,7 +47,7 @@ void graph__freeGraph(Graph *g){
     g->numVertices = 0;
 }
 
-int graph__newEdgeDirected(Graph *g, int src, int dest)
+int graph__newEdgeDirected(Graph *g, int src, int dest, int weight)
 {
     if(g == NULL) return 1;
 
@@ -60,7 +61,7 @@ int graph__newEdgeDirected(Graph *g, int src, int dest)
         iterator = iterator->next;
     }
 
-    iterator = __new_adjListNode(dest);
+    iterator = __new_adjListNode(dest, weight);
     if(iterator == NULL) return 1;
 
     if(previous == NULL)
@@ -71,7 +72,7 @@ int graph__newEdgeDirected(Graph *g, int src, int dest)
     return 0;
 }
 
-int graph__newEdgeUndirected(Graph *g, int src, int dest)
+int graph__newEdgeUndirected(Graph *g, int src, int dest, int weight)
 {
     if(g == NULL) return 1;
 
@@ -84,7 +85,7 @@ int graph__newEdgeUndirected(Graph *g, int src, int dest)
         previousSrc = iteratorSrc;
         iteratorSrc = iteratorSrc->next;
     }
-    iteratorSrc = __new_adjListNode(dest);
+    iteratorSrc = __new_adjListNode(dest, weight);
     if(iteratorSrc == NULL) return 1;
 
     AdjListNode *iteratorDest = g->vertice[dest].list;
@@ -93,7 +94,7 @@ int graph__newEdgeUndirected(Graph *g, int src, int dest)
         previousDest = iteratorDest;
         iteratorDest = iteratorDest->next;
     }
-    iteratorDest = __new_adjListNode(src);
+    iteratorDest = __new_adjListNode(src, weight);
     if(iteratorDest == NULL) {
         free(iteratorSrc);
         return 1;

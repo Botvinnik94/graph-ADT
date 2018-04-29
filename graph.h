@@ -22,6 +22,7 @@
 
 typedef struct _adjListNode {
     int dest;
+    int weight;
     struct _adjListNode *next;
 } AdjListNode, *AdjList;
 
@@ -37,14 +38,14 @@ typedef struct _graph {
 } Graph;
 
 
-AdjListNode * __new_adjListNode(int dest);
+AdjListNode * __new_adjListNode(int dest, int weight);
 Vertice * __new_vertices_array(int numVertices);
 int __topologicalSorting(Graph *g, int* entryDegree, Queue* topologicalQueue);
 
 int graph__newGraph(Graph *g, int numVertices);
 void graph__freeGraph(Graph *g);
-int graph__newEdgeUndirected(Graph *g, int src, int dest);
-int graph__newEdgeDirected(Graph *g, int src, int dest);
+int graph__newEdgeUndirected(Graph *g, int src, int dest, int weight);
+int graph__newEdgeDirected(Graph *g, int src, int dest, int weight);
 
 int graph__topologicalSorting(Graph *g, Queue* topologicalQueue);
 int graph__calculateMinPaths(Graph *g, int src);
