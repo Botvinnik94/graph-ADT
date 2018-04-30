@@ -5,12 +5,15 @@ DSet* DSet__new(size_t size){
     s = malloc(sizeof(DSet));
     if(s == NULL) return NULL;
 
-    s->dset = calloc(size, sizeof(int));
+    s->dset = malloc(size * sizeof(int));
     if(s->dset == NULL){
         free(s);
         return NULL;
     }
 
+    int i;
+    for(i = 0; i < size; i++)
+        s->dset[i] = -1;
     s->size = size;
     return s; 
 }

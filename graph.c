@@ -344,3 +344,42 @@ int graph__getSpanningTree(Graph *src, Graph *dest) {
 
     return 0;
 }
+
+int graph__calculateKruskal(Graph *src, Graph *dest) {
+
+    if(src == NULL) return 1;
+
+    int numEdgesAccepted = 0, i, vsrc, vdest;
+    BinaryHeap h;
+    Edge e, *eptr;
+    Element edgeTmp;
+    DSet* vertices = DSet__new(src->numVertices);
+    AdjListNode *iterator;
+
+    bheap__newHeap(&h, 100);
+    for(i = 0; i < src->numVertices; i++){
+        iterator = src->vertice[i].list;
+        while(iterator != NULL){
+            e.src = i;
+            e.dest = iterator->dest;
+
+            SAVE_ON_HEAP(e, eptr);
+            bheap__insert(&h, iterator->weight, eptr);
+
+            iterator = iterator->next;
+        }
+    }
+
+    while(numEdgesAccepted < src->numVertices - 1){
+        bheap__remove(&h, &edgeTmp);
+
+        vsrc = DSet__find((*(Edge*)edgeTmp.value).src, vertices);
+        vdest = DSet__find((*(Edge*)edgeTmp.value).dest, vertices);
+        if(vsrc != vdest){
+            DSet__merge(vsrc, vdest, vertices);
+            numEdgesAccepted++;
+
+            graph__newEdgeUndirected(dest, vsrc, vdest, edgeTmp.key);
+        }
+    }
+}

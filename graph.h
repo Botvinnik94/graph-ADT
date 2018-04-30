@@ -4,6 +4,7 @@
 #include "queue/queue.h"
 #include "stack/stack.h"
 #include "binary-heap/binary-heap.h"
+#include "disjoint-set/disjoint-set.h"
 
 #define INFINITE 2147483647
 
@@ -33,6 +34,11 @@ typedef struct _vertice {
     AdjList list;
 } Vertice;
 
+typedef struct _edge {
+    int src;
+    int dest;
+} Edge;
+
 typedef struct _graph {
     int numVertices;
     Vertice* vertice;
@@ -52,6 +58,7 @@ int graph__topologicalSorting(Graph *g, Queue* topologicalQueue);
 int graph__calculateMinPaths(Graph *g, int src);
 int graph__calculateDijkstra(Graph *g, int src);
 int graph__calculatePrim(Graph *g, int src);
+int graph__calculateKruskal(Graph *src, Graph *dest);
 
 int graph__getPath(Graph *g, Stack *s, int src, int dest);
 int graph__getSpanningTree(Graph *src, Graph *dest);
