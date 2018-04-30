@@ -356,6 +356,9 @@ int graph__calculateKruskal(Graph *src, Graph *dest) {
     DSet* vertices = DSet__new(src->numVertices);
     AdjListNode *iterator;
 
+    graph__freeGraph(dest);
+    graph__newGraph(dest, src->numVertices);
+
     bheap__newHeap(&h, 100);
     for(i = 0; i < src->numVertices; i++){
         iterator = src->vertice[i].list;
@@ -381,5 +384,10 @@ int graph__calculateKruskal(Graph *src, Graph *dest) {
 
             graph__newEdgeUndirected(dest, vsrc, vdest, edgeTmp.key);
         }
+
+        free(edgeTmp.value);
     }
+
+    bheap__freeHeap(&h);
+    return 0;
 }
