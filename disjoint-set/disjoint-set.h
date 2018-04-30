@@ -9,7 +9,7 @@ typedef struct _disjoint_set {
 } DSet;
 
 
-int DSet__new(DSet s);
+DSet* DSet__new(size_t size);
 void DSet__free(DSet *s);
 int DSet__find(int value, DSet* s);
 int DSet__merge(int src, int dest, DSet* s);
