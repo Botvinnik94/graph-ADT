@@ -287,7 +287,7 @@ int graph__calculatePrim(Graph *g, int src) {
             iterator = g->vertice[*v].list;
 
             while(iterator != NULL){
-                if(g->vertice[iterator->dest].distance > iterator->weight){
+                if(visited[iterator->dest] == 0 && g->vertice[iterator->dest].distance > iterator->weight){
                     g->vertice[iterator->dest].distance = iterator->weight;
                     g->vertice[iterator->dest].previous = *v;
 
