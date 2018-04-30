@@ -52,6 +52,8 @@ int graph__topologicalSorting(Graph *g, Queue* topologicalQueue);
 int graph__calculateMinPaths(Graph *g, int src);
 int graph__calculateDijkstra(Graph *g, int src);
 int graph__calculatePrim(Graph *g, int src);
+
 int graph__getPath(Graph *g, Stack *s, int src, int dest);
+int graph__getSpanningTree(Graph *src, Graph *dest);
 
 #endif

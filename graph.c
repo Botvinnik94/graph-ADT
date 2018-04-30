@@ -305,7 +305,6 @@ int graph__calculatePrim(Graph *g, int src) {
     return 0;
 }
 
-
 int graph__getPath(Graph *g, Stack *s, int src, int dest){
     if(g == NULL || src >= g->numVertices || dest >= g->numVertices)
         return 1;
@@ -323,6 +322,24 @@ int graph__getPath(Graph *g, Stack *s, int src, int dest){
 
         SAVE_ON_HEAP(iterator, iteratorPtr);
         RETURN_ON_FAILURE(stack__push(s, iteratorPtr));
+    }
+
+    return 0;
+}
+
+int graph__getSpanningTree(Graph *src, Graph *dest) {
+    if (src == NULL)
+        return 1;
+
+    int i;
+
+    graph__freeGraph(dest);
+    graph__newGraph(dest, src->numVertices);
+
+    for(i = 0; i < dest->numVertices; i++){
+        if(src->vertice[i].previous != -1)
+            graph__newEdgeUndirected(dest, i, src->vertice[i].previous,
+                                              src->vertice[i].distance);
     }
 
     return 0;
