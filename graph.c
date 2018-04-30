@@ -253,6 +253,7 @@ int graph__calculateDijkstra(Graph *g, int src){
         free(v);
     }
 
+    free(visited);
     bheap__freeHeap(&h);
     return 0;
 }
@@ -299,6 +300,7 @@ int graph__calculatePrim(Graph *g, int src) {
         free(v);
     }
 
+    free(visited);
     bheap__freeHeap(&h);
     return 0;
 }
