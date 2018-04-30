@@ -82,6 +82,8 @@ void __descendingFiltering(BinaryHeap *h, int i) {
             Element temp = h->elementArray[i];
             h->elementArray[i] = h->elementArray[childPos];
             h->elementArray[childPos] = temp;
+
+            __descendingFiltering(h, childPos);
         }
     }
 }
