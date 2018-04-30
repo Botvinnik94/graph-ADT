@@ -257,6 +257,53 @@ int graph__calculateDijkstra(Graph *g, int src){
     return 0;
 }
 
+int graph__calculatePrim(Graph *g, int src) {
+    if(g == NULL || src >= g->numVertices) return 1;
+
+    int i, cost, *v, *nVertexPtr, *visited;
+    AdjListNode *iterator;
+    BinaryHeap h;
+    Element e;
+
+    visited = calloc(g->numVertices, sizeof(int));
+    if(visited == NULL) return 1;
+
+    for(i = 0; i < g->numVertices; i++){
+        g->vertice[i].distance = INFINITE;
+        g->vertice[i].previous = -1;
+    }
+    g->vertice[src].distance = 0;
+
+    bheap__newHeap(&h, 100);
+
+    SAVE_ON_HEAP(src, nVertexPtr);
+    bheap__insert(&h, 0, nVertexPtr);
+    while(!bheap__isEmpty(&h)){
+        bheap__remove(&h, &e);
+        v = (int*)e.value;
+        if(visited[*v] == 0){
+            visited[*v] = 1;
+            iterator = g->vertice[*v].list;
+
+            while(iterator != NULL){
+                if(g->vertice[iterator->dest].distance > iterator->weight){
+                    g->vertice[iterator->dest].distance = iterator->weight;
+                    g->vertice[iterator->dest].previous = *v;
+
+                    SAVE_ON_HEAP(iterator->dest, nVertexPtr);
+                    bheap__insert(&h, iterator->weight, nVertexPtr);
+                }
+                iterator = iterator->next;
+            }
+        }
+        free(v);
+    }
+
+    bheap__freeHeap(&h);
+    return 0;
+}
+
+
 int graph__getPath(Graph *g, Stack *s, int src, int dest){
     if(g == NULL || src >= g->numVertices || dest >= g->numVertices)
         return 1;
