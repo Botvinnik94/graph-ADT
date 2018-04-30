@@ -349,7 +349,7 @@ int graph__calculateKruskal(Graph *src, Graph *dest) {
 
     if(src == NULL) return 1;
 
-    int numEdgesAccepted = 0, i, vsrc, vdest;
+    int numEdgesAccepted = 0, i, vsrcTop, vdestTop, vsrc, vdest;
     BinaryHeap h;
     Edge e, *eptr;
     Element edgeTmp;
@@ -376,9 +376,12 @@ int graph__calculateKruskal(Graph *src, Graph *dest) {
     while(numEdgesAccepted < src->numVertices - 1){
         bheap__remove(&h, &edgeTmp);
 
-        vsrc = DSet__find((*(Edge*)edgeTmp.value).src, vertices);
-        vdest = DSet__find((*(Edge*)edgeTmp.value).dest, vertices);
-        if(vsrc != vdest){
+        vsrc = (*(Edge*)edgeTmp.value).src;
+        vdest = (*(Edge*)edgeTmp.value).dest;
+
+        vsrcTop = DSet__find(vsrc, vertices);
+        vdestTop = DSet__find(vdest, vertices);
+        if(vsrcTop != vdestTop){
             DSet__merge(vsrc, vdest, vertices);
             numEdgesAccepted++;
 
