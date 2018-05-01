@@ -391,6 +391,7 @@ int graph__calculateKruskal(Graph *src, Graph *dest) {
         free(edgeTmp.value);
     }
 
+    DSet__free(vertices);
     bheap__freeHeap(&h);
     return 0;
 }
